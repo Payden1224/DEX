@@ -105,4 +105,25 @@ function removeLiquidity(uint _amount) public returns (uint , uint) {
     ERC20(cryptoDevTokenAddress).transfer(msg.sender, cryptoDevTokenAmount);
     return (ethAmount, cryptoDevTokenAmount);
 }
+
+/**
+* @dev Returns the amount Eth/Crypto Dev tokens that would be returned to the user
+* in the swap
+*/
+
+function getAmountOfTokens(
+    uint256 inputAmount,
+    uint256 inputReserve,
+    uint256 outputReserve
+) public pure returns (uint256) {
+    require(inputReserve > 0 && outputReserve > 0, "invalid reserves");
+
+    uint256 inputAmountWithFee = inputAmount * 99;
+
+
+
+    uint256 numerator = inputAmountWithFee * outputReserve;
+    uint256 denominator = (inputReserve * 100) + inputAmountWithFee;
+    return numerator / denominator;
+}
 }
